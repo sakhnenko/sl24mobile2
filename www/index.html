@@ -1,0 +1,195 @@
+<!doctype html>
+<html><meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />
+<script src="js/phonegap.js"></script>
+<script src="js/jquery-1.7.2.min.js"></script>
+
+<script type="text/javascript">
+    var deviceReadyDeferred = $.Deferred();
+var jqmReadyDeferred = $.Deferred();
+
+document.addEventListener("deviceReady", deviceReady, false);
+
+function deviceReady() {
+
+  deviceReadyDeferred.resolve();
+}
+
+$(document).one("mobileinit", function () {
+
+  jqmReadyDeferred.resolve();
+  $.support.cors = true;
+        $.mobile.allowCrossDomainPages = true;
+});
+
+$.when(deviceReadyDeferred, jqmReadyDeferred).then(doWhenBothFrameworksLoaded);
+
+function doWhenBothFrameworksLoaded() {
+      //alert("Loaded")
+    var SPORTSLIVE = 'http://sportslive24.net/wp-admin/admin-ajax.php';
+
+    $.get(SPORTSLIVE, { action: 'sl24-get-events' }, function(events) {
+        //alert("Loaded")
+        if (events!=0) {
+            $.each(events.current, function(i, e) {
+                var str = '<li><a href="#" class="game_link" data-event="'+i+'" data-stream="'+e.author_username+'">';
+                    str += '<h2>'+e.title+'</h2>';
+                    str += '<h6>'+e.sport+'  •   '+e.start+'   •    <strong>'+'20'+' Cheers!</strong></h6>';
+                    str += '</a></li>';
+                $('#home ul').append(str);
+            });
+
+            $('#home ul').append('<li class="listHeading">Coming Soon</li>');
+
+            $.each(events.upcomming, function(i, e) {
+                $('#home ul').append('<li>'+e.title+'</li>');
+            });
+        }
+
+
+
+         $('a.game_link').bind("touchstart click", function(e) {
+            e.preventDefault();
+            show_game();
+            $('#game li.eventHeading').html($(this).html());
+            $('#game video source').attr('src', 'http://stream.sportslive24.net:1935/live/'+$(this).data('stream')+'/playlist.m3u8');
+            $('.btnCheer').attr('data-stream', $(this).data('stream'));
+            
+        });
+
+    });
+
+   
+ // For cheering!
+    $('.btnCheer').on("touchend click", function(e) {
+      e.preventDefault();
+       var c = '<div class="onecheer"></div>'
+        $("#ti"+time+" .cheerBar").append(c);
+
+      $.post( SPORTSLIVE, { 
+        action : 'sl24-new-live-cheer', 
+        stream : $(this).data('stream') },
+        function( res ) {
+           // console.log(res);
+        }
+      );
+      //_gaq.push(['_trackEvent', 'Cheer', 'NewLiveMobileCheer']);
+    });
+
+    $('#backBtn').on("touchend click", function(e) {
+        show_home();
+    });
+}
+</script>
+
+<script src="js/jquery.mobile-1.4.0.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+	<script language="JavaScript" src="js/functions.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,400italic,600italic' rel='stylesheet' type='text/css'>
+
+
+<script>
+
+
+function show_home() {
+    $('#game').hide();
+    $('#home').show();
+}
+
+function show_game() {
+    $('#home').hide();
+    $('#game').show();
+}
+
+</script>
+
+	</head>
+<body>
+<!-- Home -->
+
+    <header>
+            <img src="images/logo.png" />
+    </header>
+    <div class="mobileBody" id="home">
+        <ul>
+            <li class="listHeading">
+                Currently Streaming
+            </li>
+             <li>
+                <a href="#"  class="game_link" data-event="1" data-stream="vdgami">
+                    <h2>Videogamis vs SportsLives</h2>
+                    <h6>Basketball  •   7:00pm   •    <strong>20 Cheers!</strong></h6>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+     <div class="mobileBody" id="game" style="display:none">
+
+<!--         <video class="fullVideo" controls loop webkit-playsinline="1" >
+          <source src="bbal1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+        </video> -->
+        <video id="ipads" class="fullVideo" controls autoplay="autoplay" width="460" height="360" webkit-playsinline="1">
+<source src="http://stream.sportslive24.net:1935/live/vdgami/playlist.m3u8" type="application/x-mpegurl">
+</video>
+        <div class="header">
+            <a href="#" id="backBtn"><img src="images/back.png"/></a>
+            <div class="title">Videogamis vs. SportsLives</div>
+        </div>
+        <div class="controls" style="display:block;">
+            <div class="timeline">
+
+             <div class="timecontainer">   
+                <div class="timeitem" id="ti1">
+                    <div class="cheerBar">
+                        <div class="onecheer"></div>
+                        <div class="onecheer"></div>
+                        <div class="onecheer"></div>
+                        <div class="onecheer"></div>
+                    </div>
+                    <div class="timeBar">
+                        1:00
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="cheer">
+                 <a href='#'  class="btnCheer" ontap="alert('Cheer');">Cheer!</a>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <div style="text-align:center; margin-top:40px; position:absolute; right:10px; display:none;">
+        <a href='#' class="btnCheerOverlay"></a>
+        </div>
+    </div>
+
+<!--     <div class="mobileBody" id="game" style="display:none">
+        <ul>
+            <li class="listHeading">
+                <a href="#" onclick="show_home()">Back</a>
+            </li>
+            <li class="eventHeading">
+                <h2>Videogamis vs. SportsLives</h2>
+                <h6>Basketball  •   7:00pm   •    <strong>20 Cheers!</strong></h6>
+            </li>
+        </ul>
+
+        <video controls>
+            <source src="" type="application/x-mpegurl">
+        </video>
+
+        <div style="text-align:center; margin-top:40px;">
+            <a href='#' class="btnCheer">Cheer!!!</a>
+        </div>
+    </div> -->
+   
+</body>
+
+</html>
+
+
+
+

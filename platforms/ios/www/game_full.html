@@ -1,0 +1,77 @@
+<!doctype html>
+<html><meta charset="utf-8" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1,  target-densitydpi=device-dpi" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=device-dpi" />-->
+
+<script src="js/jquery-1.7.2.min.js"></script>
+
+	<link rel="stylesheet" href="css/style.css">
+	<script language="JavaScript" src="js/functions.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,400italic,600italic' rel='stylesheet' type='text/css'>
+</head>
+
+	
+<body>
+<!-- Home -->
+
+    <header style="display:none;">
+            <img src="images/logo.png" />
+    </header>
+    <div class="mobileBody">
+        <ul style="display:none;">
+            <li class="listHeading">
+                <a href="index.html">Back</a>
+            </li>
+            <li>
+                    <h2>Videogamis vs. SportsLives</h2>
+                    <h6>Basketball  •   7:00pm   •    <strong>20 Cheers!</strong></h6>
+            </li>
+            
+        </ul>
+
+<!--         <video class="fullVideo" controls autoplay="autoplay" loop webkit-playsinline="1">
+          <source src="bbal1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+        </video> -->
+        <video id="ipads" class="fullVideo" controls autoplay="autoplay" width="460" height="360" webkit-playsinline="1">
+<source src="http://stream.sportslive24.net:1935/live/vdgami/playlist.m3u8" type="application/x-mpegurl">
+</video>
+        <div class="header">
+            <a href="#" onclick="goBack()"><img src="images/back.png"/></a>
+            <div class="title">Videogamis vs. SportsLives</div>
+        </div>
+        <div class="controls" style="display:block;">
+            <div class="timeline">
+
+             <div class="timecontainer">   
+                <div class="timeitem" id="ti1">
+                    <div class="cheerBar">
+                        <div class="onecheer"></div>
+                        <div class="onecheer"></div>
+                        <div class="onecheer"></div>
+                        <div class="onecheer"></div>
+                    </div>
+                    <div class="timeBar">
+                        1:00
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="cheer">
+                 <a href='#' onclick="addCheer()" class="btnCheer">Cheer!</a>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <div style="text-align:center; margin-top:40px; position:absolute; right:10px; display:none;">
+        <a href='#' class="btnCheerOverlay"></a>
+        </div>
+    </div>
+   
+</body>
+
+</html>
+
+
+
+
